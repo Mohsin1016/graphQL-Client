@@ -17,7 +17,22 @@ dotenv.config();
 
 // Connect to database
 connectDB();
-app.use(cors());
+// app.use(cors());
+const allowedOrigins = [
+  'https://graph-ql-client.vercel.app',
+  'http://localhost:3000' 
+];
+
+app.use(cors({
+  credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 
 app.use(
   '/graphql',
